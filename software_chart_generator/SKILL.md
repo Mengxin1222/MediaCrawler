@@ -1,15 +1,12 @@
 ---
 name: software-chart-generator
 description: >
-  软件架构图生成专家。当用户需要分析源码并生成软件开发相关的架构图时触发。
+  软件架构图生成专家。当用户输入 "/software-chart-generator" 时触发。
   触发方式：
-  (1) 用户输入 "/chart_generate_skill [图类型] [路径]" 触发普通模式，生成单张图；
-  (2) 用户输入包含 "深度画一下" / "deep mode" / "深度模式" / "详细画" 等关键词触发深度模式，一类图生成多张（如模块图先整体再细分）；
-  (3) 用户要求画模块结构图、业务流程图、系统架构图、数据流E-R图、时序图、用例图；
-  (4) 用户提供GitHub源码链接或本地源码路径要求分析并画图；
-  (5) 用户说 "分析一下这个项目" 并期望得到架构图输出。
+  (1) 用户输入 "/software-chart-generator [图类型] [路径]" 触发普通模式，生成单张图；
+  (2) 用户输入 "/software-chart-generator [图类型] [路径]" 并包含 "深度画一下" / "deep mode" / "深度模式" / "详细画" 等关键词触发深度模式，一类图生成多张（如模块图先整体再细分）；
   擅长用Mermaid语法生成图表，保存为.md文件供渲染阅读器打开。
-  仅在用户明确请求画图、分析源码架构、或需要理解项目结构时触发。
+  仅在用户明确调用 "/software-chart-generator" 时触发。
 ---
 
 # Software Chart Generator
@@ -22,19 +19,19 @@ description: >
 
 ### 普通模式（单张图）
 
-**触发条件**：用户输入 `/chart_generate_skill [图类型] [路径]` 或类似请求画单张图
+**触发条件**：用户输入 `/software-chart-generator [图类型] [路径]`
 
 **行为**：针对指定范围生成**一张**对应类型的图表，包含完整解释说明
 
 ### 深度模式（多张图）
 
-**触发条件**：用户输入包含 "深度画一下"、"deep mode"、"深度模式"、"详细画" 等关键词
+**触发条件**：用户输入 `/software-chart-generator [图类型] [路径]` 且消息中包含 "深度画一下"、"deep mode"、"深度模式"、"详细画" 等关键词
 
 **行为**：
 - 一类图生成**多张**，层层递进
 - 例如模块图：先画整体模块 → 再为每个核心模块画详细模块图 → 最后画模块依赖关系图
 - 每张图都有独立解释
-- 参考 `/workspace/diagrams` 目录下的示例文件了解深度模式输出标准
+- 参考 `references/` 目录下的示例文件了解深度模式输出标准
 
 ## 支持的图类型
 
@@ -102,63 +99,6 @@ description: >
 
 每张图必须包含以下解释（保存为Markdown）：
 
-```markdown
-## 图表解释
-
-### 1. 概述
-这张图展示的是什么，解决什么问题
-
-### 2. 关键元素说明
-- **元素A**：职责、作用、为什么存在
-- **元素B**：职责、作用、为什么存在
-
-### 3. 关键流程/关系说明
-- **流程A**：详细执行步骤和数据变化
-- **流程B**：详细执行步骤和数据变化
-
-### 4. 设计亮点
-架构上的重要设计选择及其原因
-
-### 5. 使用建议
-如何阅读这张图，适用场景
-```
-
-### 6. 输出规范
-
-#### 6.1 文件组织方式
-
-**普通模式**：一类图一个文件，文件内包含一张图及其解释
-
-**深度模式**：一类图一个文件，文件内包含**多张图**，用二级标题 `##` 分隔
-
-```
-[项目名]-charts/
-├── 01-sequence-diagram.md            # 时序图：包含5张时序图
-├── 02-use-case-diagram.md            # 用例图：包含7张用例图
-├── 03-data-flow-er-diagram.md        # 数据流E-R图：包含8张图
-├── 04-system-architecture.md         # 系统架构图：包含8张架构图
-├── 05-business-process.md            # 业务流程图：包含8张流程图
-├── 06-module-structure.md            # 模块结构图：包含12张模块图
-└── ...
-```
-
-#### 6.2 文件命名规范
-
-**格式**：`[序号]-[图类型英文].md`
-
-| 序号 | 文件名 | 说明 |
-|------|--------|------|
-| 01 | `01-sequence-diagram.md` | 时序图 |
-| 02 | `02-use-case-diagram.md` | 用例图 |
-| 03 | `03-data-flow-er-diagram.md` | 数据流E-R图 |
-| 04 | `04-system-architecture.md` | 系统架构图 |
-| 05 | `05-business-process.md` | 业务流程图 |
-| 06 | `06-module-structure.md` | 模块结构图 |
-
-#### 6.3 文件内容结构
-
-每个 `.md` 文件包含**一类图的多张图**，结构如下：
-
     # [项目名] [图类型] ([图类型英文])
 
     ## 1. [子图标题]
@@ -207,16 +147,46 @@ description: >
     *所属项目: [项目名]*
     *文件包含: [N] 张图*
 
+### 6. 输出规范
+
+#### 6.1 文件组织方式
+
+**普通模式**：一类图一个文件，文件内包含一张图及其解释
+
+**深度模式**：一类图一个文件，文件内包含**多张图**，用二级标题 `##` 分隔
+
+    [项目名]-charts/
+    ├── 01-sequence-diagram.md            # 时序图：包含多张时序图
+    ├── 02-use-case-diagram.md            # 用例图：包含多张用例图
+    ├── 03-data-flow-er-diagram.md        # 数据流E-R图：包含多张图
+    ├── 04-system-architecture.md         # 系统架构图：包含多张架构图
+    ├── 05-business-process.md            # 业务流程图：包含多张流程图
+    ├── 06-module-structure.md            # 模块结构图：包含多张模块图
+    └── ...
+
+#### 6.2 文件命名规范
+
+**格式**：`[序号]-[图类型英文].md`
+
+| 序号 | 文件名 | 说明 |
+|------|--------|------|
+| 01 | `01-sequence-diagram.md` | 时序图 |
+| 02 | `02-use-case-diagram.md` | 用例图 |
+| 03 | `03-data-flow-er-diagram.md` | 数据流E-R图 |
+| 04 | `04-system-architecture.md` | 系统架构图 |
+| 05 | `05-business-process.md` | 业务流程图 |
+| 06 | `06-module-structure.md` | 模块结构图 |
+
 ## 参考资源
 
 - **深度模式示例**：`references/` 目录包含6种图类型的深度模式示例文件：
-  - `references/01-sequence-diagram.md` — 时序图示例（5张时序图）
-  - `references/02-use-case-diagram.md` — 用例图示例（7张用例图）
-  - `references/03-data-flow-er-diagram.md` — 数据流E-R图示例（8张图）
-  - `references/04-system-architecture.md` — 系统架构图示例（8张架构图）
-  - `references/05-business-process.md` — 业务流程图示例（8张流程图）
-  - `references/06-module-structure.md` — 模块结构图示例（12张模块图）
-  
+  - `references/01-sequence-diagram.md` — 时序图示例（多张时序图）
+  - `references/02-use-case-diagram.md` — 用例图示例（多张用例图）
+  - `references/03-data-flow-er-diagram.md` — 数据流E-R图示例（多张图）
+  - `references/04-system-architecture.md` — 系统架构图示例（多张架构图）
+  - `references/05-business-process.md` — 业务流程图示例（多张流程图）
+  - `references/06-module-structure.md` — 模块结构图示例（多张模块图）
+
   当用户触发深度模式时，读取对应的参考文件了解输出密度和解释深度。
 
 - **Mermaid语法参考**：需要时读取 `references/mermaid-syntax.md`
