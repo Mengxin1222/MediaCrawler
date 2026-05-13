@@ -147,15 +147,15 @@ description: >
 
 ## 参考资源
 
-- **深度模式示例**：`/workspace/diagrams/` 目录包含6种图类型的深度模式示例文件：
-  - `01-sequence-diagram.md` — 时序图示例（5张时序图）
-  - `02-use-case-diagram.md` — 用例图示例（7张用例图）
-  - `03-data-flow-er-diagram.md` — 数据流E-R图示例（8张图）
-  - `04-system-architecture.md` — 系统架构图示例（8张架构图）
-  - `05-business-process.md` — 业务流程图示例（8张流程图）
-  - `06-module-structure.md` — 模块结构图示例（12张模块图）
+- **深度模式示例**：`references/` 目录包含6种图类型的深度模式示例文件：
+  - `references/01-sequence-diagram.md` — 时序图示例（5张时序图）
+  - `references/02-use-case-diagram.md` — 用例图示例（7张用例图）
+  - `references/03-data-flow-er-diagram.md` — 数据流E-R图示例（8张图）
+  - `references/04-system-architecture.md` — 系统架构图示例（8张架构图）
+  - `references/05-business-process.md` — 业务流程图示例（8张流程图）
+  - `references/06-module-structure.md` — 模块结构图示例（12张模块图）
   
-  当用户触发深度模式时，参考这些示例的输出密度和解释深度。
+  当用户触发深度模式时，读取对应的参考文件了解输出密度和解释深度。
 
 - **Mermaid语法参考**：需要时读取 `references/mermaid-syntax.md`
 
