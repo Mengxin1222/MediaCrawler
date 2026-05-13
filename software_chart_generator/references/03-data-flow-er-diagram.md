@@ -257,7 +257,7 @@ graph LR
 erDiagram
     XHS_NOTE ||--o{ XHS_NOTE_COMMENT : has
     XHS_NOTE }o--|| XHS_CREATOR : created_by
-    XHS_NOTE_COMMENT ||--o{ XHS_NOTE_COMMENT : replies_to
+    %% XHS_NOTE_COMMENT 通过 parent_comment_id 字段实现自引用回复关系
     BILIBILI_VIDEO ||--o{ BILIBILI_VIDEO_COMMENT : has
     DOUYIN_VIDEO ||--o{ DOUYIN_VIDEO_COMMENT : has
 
