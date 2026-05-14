@@ -67,13 +67,37 @@
 
 ## 安装
 
+### 1. 安装 Skill
+
 1. 下载 `software_chart_generator` 目录或压缩包
 2. 放入你的 AI Assistant 的 skills 目录
 3. 重启 AI Assistant
 
+### 2. 安装 Node.js（用于 Mermaid 语法检测）
+
+语法检测依赖 `@mermaid-js/mermaid-cli`，需要 Node.js 环境：
+
+```bash
+# 检查是否已安装 Node.js
+node --version
+
+# 未安装则安装（推荐 v18+）
+# macOS
+brew install node
+
+# Ubuntu/Debian
+sudo apt update && sudo apt install nodejs npm
+
+# Windows
+# 下载安装包：https://nodejs.org/
+```
+
+首次运行时会自动安装 `mermaid-cli` 依赖，无需手动操作。
+
 ## 使用前提
 
 - 需要 AI Assistant 支持 Skill 插件
+- **需要 Node.js 环境**（用于 Mermaid 语法自动检测）
 - Mermaid 渲染需要 Markdown 阅读器支持（如 VS Code + Mermaid 插件、GitHub、GitLab）
 
 ## License

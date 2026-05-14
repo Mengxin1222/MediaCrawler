@@ -132,28 +132,61 @@ description: >
 - 汇总输出目录结构
 - 报告每类图的生成状态（成功/失败）
 
-### 4. Mermaid语法验证与重画机制
+### 4. Mermaid 语法验证与重画机制
 
-每张图生成后，必须进行语法自检：
+每张图生成后，必须调用脚本进行语法检测：
 
-**自检步骤**：
-1. 检查节点定义是否合法：节点文本不能包含未转义的 `[`、`]`、`(`、`)`、`{`、`}` 等特殊字符
-2. 检查箭头语法：`-->`、`-.->`、`==>` 等箭头格式是否正确
-3. 检查关键字拼写：`graph`、`sequenceDiagram`、`classDiagram` 等是否拼写正确
-4. 检查括号匹配：每个 `(` 要有 `)`，每个 `[` 要有 `]`
-5. 检查子图闭合：`subgraph` 必须有对应的 `end`
+**检测方式**：
+```python
+import subprocess
+import json
+
+result = subprocess.run(
+    ["python", "scripts/validate_wrapper.py", mermaid_code],
+    capture_output=True,
+    text=True
+)
+check = json.loads(result.stdout)
+
+if check["success"]:
+    # 语法正确，保存
+else:
+    # 语法错误，check["error"] 包含错误信息
+```
+
+**重画流程**（Skill 内部计数）：
+
+```
+生成 Mermaid 代码
+  ↓
+retry_count = 0
+  ↓
+调用 validate_wrapper.py 检测
+  ↓
+成功？ → 保存，结束
+  ↓
+失败
+  ↓
+print(f"第 {retry_count + 1} 次失败: {error}")
+  ↓
+retry_count += 1
+  ↓
+retry_count < 3？
+  → 是：根据错误信息重新生成代码，回到检测步骤
+  → 否：跳过该图，记录错误原因
+```
+
+**实现要点**：
+- **计数器在 Skill 中维护**：`retry_count` 变量，每次失败 +1
+- **最多 3 次**：`retry_count >= 3` 时放弃该图
+- **错误信息传给模型**：`check["error"]` 作为上下文，指导重新生成
+- **脚本无状态**：`validate_wrapper.py` 只做纯检测，不记数
 
 **常见错误及修复**：
 - 节点文本含方括号：将 `[内容]` 改为 `"[内容]"` 或 `"内容"`
 - 节点文本含圆括号：将 `(内容)` 改为 `"(内容)"`
 - 箭头方向错误：`A -> B` 应为 `A --> B`
 - 缺少 end：每个 `subgraph`、`loop`、`alt`、`opt` 必须有对应的 `end`
-
-**重画机制**：
-- 若自检发现语法错误，标记该图为「待修复」
-- 分析错误原因，修正 Mermaid 代码
-- 重新执行自检，直到通过
-- 最多重试 3 次，若仍失败则跳过该图并记录错误原因
 
 ### 5. 深度模式的多图策略
 
