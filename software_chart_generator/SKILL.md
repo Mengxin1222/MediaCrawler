@@ -1,10 +1,12 @@
 ---
-name: software-chart-generator
+name: software-chart-generator-v2
 description: >
-  软件架构图生成专家。当用户输入 "/software-chart-generator" 时触发。
+  软件架构图生成专家 V2。当用户输入 "/software-chart-generator" 时触发。
   触发方式：用户输入 "/software-chart-generator [图类型] [路径]" 时触发，
   自动进入深度模式，一类图生成多张（如模块图先整体再细分）。
   擅长用Mermaid语法生成图表，保存为.md文件供渲染阅读器打开。
+  V2 新增：Mermaid 语法自动检测（基于 mermaid 核心包纯解析，无需浏览器）、
+  错误自动截断格式化、调试日志、最多3次重画机制。
   仅在用户明确调用 "/software-chart-generator" 时触发。
 ---
 
