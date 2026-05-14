@@ -4,6 +4,6 @@
   "description": "Mermaid syntax validator for software-chart-generator skill",
   "private": true,
   "dependencies": {
-    "mermaid": "^11.14.0"
+    "@mermaid-js/mermaid-cli": "^11.12.0"
   }
 }

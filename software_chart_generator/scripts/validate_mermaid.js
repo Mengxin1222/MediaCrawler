@@ -1,50 +1,60 @@
 #!/usr/bin/env node
 /**
  * Mermaid 语法检测脚本（V2）
- * 使用 mermaid 核心包纯解析，无需浏览器
- * 
- * 注意：mermaid v11+ 是 ES Module，需要用动态 import
+ * 使用 mermaid-cli 的 mmdc 命令检测语法
  */
 
 const fs = require('fs');
+const path = require('path');
+const { execFile } = require('child_process');
 
-// 动态导入 mermaid（ES Module）
-async function validate(inputFile) {
-  if (!inputFile) {
-    console.error(JSON.stringify({
-      success: false,
-      error: "No input file specified"
-    }));
-    process.exit(1);
-  }
+const args = process.argv.slice(2);
+const inputFile = args[0];
 
-  // 读取 Mermaid 代码
-  const code = fs.readFileSync(inputFile, 'utf8');
-
-  try {
-    // 动态导入 mermaid
-    const mermaid = await import('mermaid');
-    
-    // 初始化（不启动浏览器）
-    mermaid.default.initialize({
-      startOnLoad: false,
-      securityLevel: 'strict'
-    });
-
-    // 纯解析检测语法
-    await mermaid.default.parse(code);
-    
-    console.log(JSON.stringify({ success: true }));
-    process.exit(0);
-  } catch (error) {
-    console.error(JSON.stringify({
-      success: false,
-      error: error.message || String(error)
-    }));
-    process.exit(1);
-  }
+if (!inputFile) {
+  console.error(JSON.stringify({
+    success: false,
+    error: "No input file specified"
+  }));
+  process.exit(1);
 }
 
-// 获取命令行参数并执行
-const args = process.argv.slice(2);
-validate(args[0]);
+// 读取 Mermaid 代码
+const code = fs.readFileSync(inputFile, 'utf8');
+
+// 临时输出文件
+const tempOutput = path.join(path.dirname(inputFile), `.temp-${Date.now()}.svg`);
+
+// 查找本地安装的 mmdc
+const scriptDir = __dirname;
+const packageDir = path.join(scriptDir, '..');
+const mmdcBin = path.join(packageDir, 'node_modules', '.bin', 'mmdc');
+
+if (!fs.existsSync(mmdcBin)) {
+  console.error(JSON.stringify({
+    success: false,
+    error: "mmdc not found. Please run 'npm install' in the package directory."
+  }));
+  process.exit(1);
+}
+
+execFile(mmdcBin, ['-i', inputFile, '-o', tempOutput], (error, stdout, stderr) => {
+  // 清理临时文件
+  try {
+    if (fs.existsSync(tempOutput)) {
+      fs.unlinkSync(tempOutput);
+    }
+  } catch (e) {}
+
+  if (error) {
+    const errorMsg = stderr || stdout || error.message || "Unknown error";
+    console.error(JSON.stringify({
+      success: false,
+      error: errorMsg.trim()
+    }));
+    process.exit(1);
+  } else {
+    console.log(JSON.stringify({ success: true }));
+    process.exit(0);
+  }
+});
