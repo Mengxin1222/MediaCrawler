@@ -1,0 +1,12 @@
+{
+  "name": "software-chart-generator",
+  "version": "1.0.0",
+  "description": "Mermaid syntax validator for software-chart-generator skill",
+  "private": true,
+  "dependencies": {
+    "@mermaid-js/mermaid-cli": "^11.14.0"
+  },
+  "scripts": {
+    "validate": "node scripts/validate_mermaid.js"
+  }
+}
