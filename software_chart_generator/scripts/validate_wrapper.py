@@ -222,12 +222,12 @@ def validate_mermaid(code: str, chart_name: str = "unknown", attempt: int = 1, e
                 "error_formatted": error
             }
         
-        # 2. 检查 mermaid 是否安装，未安装则自动安装
+        # 2. 检查 mermaid-syntax-parser 是否安装，未安装则自动安装
         node_modules_dir = os.path.join(package_dir, "node_modules")
-        mermaid_exists = os.path.exists(os.path.join(node_modules_dir, "mermaid"))
+        parser_exists = os.path.exists(os.path.join(node_modules_dir, "mermaid-syntax-parser"))
         
-        if not mermaid_exists:
-            print("Installing mermaid (this may take a minute)...", file=sys.stderr)
+        if not parser_exists:
+            print("Installing mermaid-syntax-parser (this may take a minute)...", file=sys.stderr)
             npm_install = subprocess.run(
                 ["npm", "install"],
                 cwd=package_dir,
@@ -251,8 +251,8 @@ def validate_mermaid(code: str, chart_name: str = "unknown", attempt: int = 1, e
             temp_file = f.name
         
         try:
-            # 4. 调用 Node.js 脚本
-            validate_script = os.path.join(script_dir, "validate_mermaid.js")
+            # 4. 调用 Node.js 脚本（.cjs 格式，因为 mermaid-syntax-parser 是 CJS 包）
+            validate_script = os.path.join(script_dir, "validate_mermaid.cjs")
             result = subprocess.run(
                 ["node", validate_script, temp_file],
                 capture_output=True,
