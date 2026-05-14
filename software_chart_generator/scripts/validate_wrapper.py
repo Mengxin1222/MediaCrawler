@@ -127,3 +127,197 @@ if __name__ == "__main__":
 
     result = validate_mermaid(code)
     print(json.dumps(result, ensure_ascii=False))
+#!/usr/bin/env python3
+""#!/usr/bin/env python3
+"""
+Mermaid 语法检测的 Python#!/usr/bin/env python3
+"""
+Mermaid 语法检测的 Python 包装脚本（V2）
+作用：自动安装 Node.js 依赖、调用 Node.js#!/usr/bin/env python3
+"""
+Mermaid 语法检测的 Python 包装脚本（V2）
+作用：自动安装 Node.js 依赖、调用 Node.js 检测脚本、返回结构化结果
+V2#!/usr/bin/env python3
+"""
+Mermaid 语法检测的 Python 包装脚本（V2）
+作用：自动安装 Node.js 依赖、调用 Node.js 检测脚本、返回结构化结果
+V2 优化：更健壮的路径查找、错误信息#!/usr/bin/env python3
+"""
+Mermaid 语法检测的 Python 包装脚本（V2）
+作用：自动安装 Node.js 依赖、调用 Node.js 检测脚本、返回结构化结果
+V2 优化：更健壮的路径查找、错误信息截断、错误类型分类
+"""
+
+import subprocess
+import sys
+import os#!/usr/bin/env python3
+"""
+Mermaid 语法检测的 Python 包装脚本（V2）
+作用：自动安装 Node.js 依赖、调用 Node.js 检测脚本、返回结构化结果
+V2 优化：更健壮的路径查找、错误信息截断、错误类型分类
+"""
+
+import subprocess
+import sys
+import os
+import json
+import tempfile
+import hashlib#!/usr/bin/env python3
+"""
+Mermaid 语法检测的 Python 包装脚本（V2）
+作用：自动安装 Node.js 依赖、调用 Node.js 检测脚本、返回结构化结果
+V2 优化：更健壮的路径查找、错误信息截断、错误类型分类
+"""
+
+import subprocess
+import sys
+import os
+import json
+import tempfile
+import hashlib
+
+
+def _find_mmdc_binary(package_dir: str) -> str:
+#!/usr/bin/env python3
+"""
+Mermaid 语法检测的 Python 包装脚本（V2）
+作用：自动安装 Node.js 依赖、调用 Node.js 检测脚本、返回结构化结果
+V2 优化：更健壮的路径查找、错误信息截断、错误类型分类
+"""
+
+import subprocess
+import sys
+import os
+import json
+import tempfile
+import hashlib
+
+
+def _find_mmdc_binary(package_dir: str) -> str:
+    """
+    查找 mmdc#!/usr/bin/env python3
+"""
+Mermaid 语法检测的 Python 包装脚本（V2）
+作用：自动安装 Node.js 依赖、调用 Node.js 检测脚本、返回结构化结果
+V2 优化：更健壮的路径查找、错误信息截断、错误类型分类
+"""
+
+import subprocess
+import sys
+import os
+import json
+import tempfile
+import hashlib
+
+
+def _find_mmdc_binary(package_dir: str) -> str:
+    """
+    查找 mmdc 可执行文件的路径
+    
+#!/usr/bin/env python3
+"""
+Mermaid 语法检测的 Python 包装脚本（V2）
+作用：自动安装 Node.js 依赖、调用 Node.js 检测脚本、返回结构化结果
+V2 优化：更健壮的路径查找、错误信息截断、错误类型分类
+"""
+
+import subprocess
+import sys
+import os
+import json
+import tempfile
+import hashlib
+
+
+def _find_mmdc_binary(package_dir: str) -> str:
+    """
+    查找 mmdc 可执行文件的路径
+    
+    按优先级查找：
+    1.#!/usr/bin/env python3
+"""
+Mermaid 语法检测的 Python 包装脚本（V2）
+作用：自动安装 Node.js 依赖、调用 Node.js 检测脚本、返回结构化结果
+V2 优化：更健壮的路径查找、错误信息截断、错误类型分类
+"""
+
+import subprocess
+import sys
+import os
+import json
+import tempfile
+import hashlib
+
+
+def _find_mmdc_binary(package_dir: str) -> str:
+    """
+    查找 mmdc 可执行文件的路径
+    
+    按优先级查找：
+    1. node_modules/.bin/mmdc（本地安装#!/usr/bin/env python3
+"""
+Mermaid 语法检测的 Python 包装脚本（V2）
+作用：自动安装 Node.js 依赖、调用 Node.js 检测脚本、返回结构化结果
+V2 优化：更健壮的路径查找、错误信息截断、错误类型分类
+"""
+
+import subprocess
+import sys
+import os
+import json
+import tempfile
+import hashlib
+
+
+def _find_mmdc_binary(package_dir: str) -> str:
+    """
+    查找 mmdc 可执行文件的路径
+    
+    按优先级查找：
+    1. node_modules/.bin/mmdc（本地安装）
+    2. npx m#!/usr/bin/env python3
+"""
+Mermaid 语法检测的 Python 包装脚本（V2）
+作用：自动安装 Node.js 依赖、调用 Node.js 检测脚本、返回结构化结果
+V2 优化：更健壮的路径查找、错误信息截断、错误类型分类
+"""
+
+import subprocess
+import sys
+import os
+import json
+import tempfile
+import hashlib
+
+
+def _find_mmdc_binary(package_dir: str) -> str:
+    """
+    查找 mmdc 可执行文件的路径
+    
+    按优先级查找：
+    1. node_modules/.bin/mmdc（本地安装）
+    2. npx mmdc（全局或通过 npx）
+#!/usr/bin/env python3
+"""
+Mermaid 语法检测的 Python 包装脚本（V2）
+作用：自动安装 Node.js 依赖、调用 Node.js 检测脚本、返回结构化结果
+V2 优化：更健壮的路径查找、错误信息截断、错误类型分类
+"""
+
+import subprocess
+import sys
+import os
+import json
+import tempfile
+import hashlib
+
+
+def _find_mmdc_binary(package_dir: str) -> str:
+    """
+    查找 mmdc 可执行文件的路径
+    
+    按优先级查找：
+    1. node_modules/.bin/mmdc（本地安装）
+    2. npx mmdc（全局或通过 npx）
+    3. 报错
+    
